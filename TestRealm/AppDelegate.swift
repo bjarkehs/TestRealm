@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let realm = try! Realm()
+        let localization1 = LocalizationString(language: "en", key: "foo", value: "bar")
+        try! realm.write {
+            realm.add(localization1, update: true)
+        }
+        
+        let localizationString = realm.objects(LocalizationString.self).first
+        
+        dump(localizationString!)
+        print("LANGUAGE: " + localizationString!.language)
+        
         return true
     }
 
